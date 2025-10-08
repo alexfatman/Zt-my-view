@@ -54,7 +54,7 @@
 | Key | Value |
 |-----|-------|
 | `ZEROTIER_API_TOKEN` | ваш токен от ZeroTier |
-| `ZEROTIER_NETWORK_ID` | `48d6023c462aca41` (или ваш ID сети) |
+| `ZEROTIER_NETWORK_ID` | ваш ID сети |
 | `APP_USERNAME` | логин для входа в SPA (например, `admin`) |
 | `APP_PASSWORD` | пароль для входа в SPA (придумайте надёжный!) |
 
