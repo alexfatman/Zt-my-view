@@ -37,7 +37,7 @@
    | Key                      | Value                     |
    |--------------------------|---------------------------|
    | `ZEROTIER_API_TOKEN`     | ваш_токен_здесь           |
-   | `ZEROTIER_NETWORK_ID`    | `48d6023c462aca41` (или ваш ID) |
+   | `ZEROTIER_NETWORK_ID`    | ваш ID |
 
 4. Нажмите **Deploy**
 
