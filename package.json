@@ -1,0 +1,17 @@
+{
+  "name": "zerotier-members-spa",
+  "version": "1.0.0",
+  "description": "SPA to display ZeroTier network members using Vercel",
+  "main": "api/members.js",
+  "scripts": {
+    "dev": "echo \"Deploy on Vercel. No local dev server needed.\""
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/zerotier-members-spa.git"
+  },
+  "license": "MIT"
+}
