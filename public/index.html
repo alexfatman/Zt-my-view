@@ -127,10 +127,11 @@
   </div>
 
   <script>
-    // === Вспомогательные функции ===
+    // === Вспомогательная функция: "X времени назад" ===
     function timeAgo(dateStr) {
-      if (dateStr === '—') return '—';
+      if (dateStr === '—' || !dateStr) return '—';
       const date = new Date(dateStr);
+      if (isNaN(date.getTime())) return '—';
       const seconds = Math.floor((new Date() - date) / 1000);
       if (seconds < 60) return 'только что';
       const intervals = [
@@ -149,8 +150,10 @@
                        unit === 'год' ? ['год', 'года', 'лет'] :
                        ['месяц', 'месяца', 'месяцев'];
           let form;
-          if (count % 10 === 1 && count % 100 !== 11) form = forms[0];
-          else if ([2,3,4].includes(count % 10) && ![12,13,14].includes(count % 100)) form = forms[1];
+          const n = count % 100;
+          if (n >= 11 && n <= 19) form = forms[2];
+          else if (count % 10 === 1) form = forms[0];
+          else if ([2,3,4].includes(count % 10)) form = forms[1];
           else form = forms[2];
           return `${count} ${form} назад`;
         }
@@ -163,14 +166,16 @@
     const savedTheme = localStorage.getItem('theme') || 'light';
     htmlRoot.setAttribute('data-theme', savedTheme);
 
-    document.getElementById('theme-toggle').onclick = () => {
+    function toggleTheme() {
       const current = htmlRoot.getAttribute('data-theme');
       const next = current === 'dark' ? 'light' : 'dark';
       htmlRoot.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
       document.getElementById('theme-toggle').textContent = next === 'dark' ? '☀️ Светлая' : '🌙 Тёмная';
-    };
+    }
+
     document.getElementById('theme-toggle').textContent = savedTheme === 'dark' ? '☀️ Светлая' : '🌙 Тёмная';
+    document.getElementById('theme-toggle').onclick = toggleTheme;
 
     // === Аутентификация ===
     function attemptLogin() {
@@ -200,18 +205,8 @@
 
     document.getElementById('logout').onclick = () => {
       localStorage.removeItem('authenticated');
-      document.getElementById('app').classList.add('hidden');
-      document.getElementById('login-screen').classList.remove('hidden');
-      document.getElementById('username').value = '';
-      document.getElementById('password').value = '';
+      location.reload();
     };
-
-    // Проверка сессии при загрузке
-    if (localStorage.getItem('authenticated') === 'true') {
-      document.getElementById('login-screen').classList.add('hidden');
-      document.getElementById('app').classList.remove('hidden');
-loadMembers();
-    }
 
     // === Загрузка и отображение данных ===
     let membersData = [];
@@ -300,8 +295,11 @@ loadMembers();
             let lastSeenRaw = null;
             let lastSeenRel = '—';
             if (m.lastSeen && m.lastSeen !== '—') {
-              lastSeenRaw = new Date(m.lastSeen);
-              lastSeenRel = timeAgo(m.lastSeen);
+              const date = new Date(m.lastSeen);
+              if (!isNaN(date.getTime())) {
+                lastSeenRaw = date;
+                lastSeenRel = timeAgo(m.lastSeen);
+              }
             }
             return { ...m, lastSeenRaw, lastSeenRel };
           });
@@ -318,8 +316,12 @@ loadMembers();
         });
     }
 
-    // === API Auth Endpoint (на стороне Vercel) ===
-    // Будет реализован в /api/auth.js
+    // === ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ ===
+    if (localStorage.getItem('authenticated') === 'true') {
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('app').classList.remove('hidden');
+      loadMembers(); // ✅ Теперь данные загружаются автоматически!
+    }
   </script>
 </body>
 </html>
