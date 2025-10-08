@@ -284,12 +284,16 @@
 
       sorted.forEach(m => {
         const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${m.name || '—'}</td>
-          <td>${m.internalIp || '—'}</td>
-          <td>${m.externalIp || '—'}</td>
-          <td>${m.lastSeenRel}</td>
-        `;
+        const nameCell = m.internalIp && m.internalIp !== '—'
+  ? `<a href="http://${m.internalIp}/" target="_blank" rel="noopener">${m.name || m.internalIp}</a>`
+  : (m.name || '—');
+
+row.innerHTML = `
+  <td>${nameCell}</td>
+  <td>${m.internalIp || '—'}</td>
+  <td>${m.externalIp || '—'}</td>
+  <td>${m.lastSeenRel}</td>
+`;
         tbody.appendChild(row);
       });
     }
