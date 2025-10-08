@@ -168,7 +168,7 @@ a:hover {
               <th data-sort="name">Имя ▼</th>
               <th data-sort="internalIp">Внутр. IP ▼</th>
               <th data-sort="externalIp">Внешний IP ▼</th>
-              <th data-sort="lastSeenRel">Последний онлайн ▼</th>
+              <th data-sort="lastSeenRel">Онлайн ▼</th>
             </tr>
           </thead>
           <tbody id="table-body"></tbody>
@@ -261,7 +261,7 @@ a:hover {
 
     // === Загрузка и отображение данных ===
     let membersData = [];
-    let currentSort = { key: 'name', dir: 1 };
+    let currentSort = { key: 'lastSeenRel', dir: -1 }; // -1 = от новых к старым
     let autoRefreshInterval;
 
     function renderTable() {
